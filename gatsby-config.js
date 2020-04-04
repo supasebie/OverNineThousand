@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: `/public`,
   siteMetadata: {
     title: 'Over Nine Thousand',
     author: 'J. Sebastian Ruiz',
