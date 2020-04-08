@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+import MainListItemIntro from './main-components/MainListItemIntro';
+import PropTypes from 'prop-types'
 import pic01 from '../images/pic01.jpg'
 import pic02 from '../images/pic02.jpg'
 import pic03 from '../images/pic03.jpg'
@@ -29,13 +30,7 @@ class Main extends React.Component {
           }`}
           style={{ display: 'none' }}
         >
-          <h2 className="major">Intro</h2>
-          <span className="image main">
-            <img src={pic01} alt="" />
-          </span>
-          <p>
-            Add some content later.
-          </p>
+          <MainListItemIntro />
           {close}
         </article>
 
@@ -50,9 +45,7 @@ class Main extends React.Component {
           <span className="image main">
             <img src={pic02} alt="" />
           </span>
-          <p>
-            Add some content later.
-          </p>
+          <p>Add some content later.</p>
           {close}
         </article>
 
@@ -67,9 +60,7 @@ class Main extends React.Component {
           <span className="image main">
             <img src={pic03} alt="" />
           </span>
-          <p>
-            Add some content later.
-          </p>
+          <p>Add some content later.</p>
           {close}
         </article>
 
@@ -81,7 +72,14 @@ class Main extends React.Component {
           style={{ display: 'none' }}
         >
           <h2 className="major">Contact</h2>
-          <form method="post" action="#">
+          <form
+            method="post"
+            action="#"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+          >
+            <input type="hidden" name="bot-field" />
+            <input type="hidden" name="form-name" value="contact" />
             <div className="field half first">
               <label htmlFor="name">Name</label>
               <input type="text" name="name" id="name" />
