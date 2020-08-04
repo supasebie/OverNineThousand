@@ -1,5 +1,5 @@
 import React from 'react';
-import pic01 from '../../images/pic01.png'
+import pic01 from '../../images/pic01.jpg'
 
 export default class MainListItemIntro extends React.Component {
     render () {
@@ -11,7 +11,7 @@ export default class MainListItemIntro extends React.Component {
           </span>
           <p> We're a company focused on
             solving the complex problem of creating a strong web presence for your company and personal works.</p>
-          <p>Over Nine Thousand was founded by Sebastian, an web and business 
+          <p>Over Nine Thousand was founded by Sebastian, a software solution 
             veteran with extensive experience in managing and creating complex web 
             solutions. His career spans multiple online industries inclusive of; 
             Massively Multiplay Online Gaming, Twitch Broadcasting, Online Document 
