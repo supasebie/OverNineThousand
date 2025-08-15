@@ -22,8 +22,8 @@ async function getEmojis() {
 
 // Safely parse a date-like value; fall back to now if invalid
 function parseDateSafe(value: unknown): Date {
-  if (typeof value === "string" || value instanceof Date || typeof value === "number") {
-    const d = new Date(value as any);
+  if (typeof value === "string" || typeof value === "number" || value instanceof Date) {
+    const d = new Date(value as string | number | Date);
     return isNaN(d.getTime()) ? new Date() : d;
   }
   return new Date();
@@ -124,7 +124,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   posts.forEach((post) => {
     routes.push({
       url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: parseDateSafe((post as any).date),
+      lastModified: parseDateSafe(post.date),
       changeFrequency: "monthly",
       priority: 0.5,
     });
