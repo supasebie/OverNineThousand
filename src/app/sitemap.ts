@@ -20,6 +20,15 @@ async function getEmojis() {
   }
 }
 
+// Safely parse a date-like value; fall back to now if invalid
+function parseDateSafe(value: unknown): Date {
+  if (typeof value === "string" || value instanceof Date || typeof value === "number") {
+    const d = new Date(value as any);
+    return isNaN(d.getTime()) ? new Date() : d;
+  }
+  return new Date();
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Base URL for the website
   const baseUrl = "https://overninethousand.com";
@@ -62,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   tutorials.forEach((tutorial) => {
     routes.push({
       url: `${baseUrl}/tutorials/${tutorial.id}`,
-      lastModified: new Date(tutorial.date),
+      lastModified: parseDateSafe(tutorial.date),
       changeFrequency: "monthly",
       priority: 0.7,
     });
@@ -115,7 +124,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   posts.forEach((post) => {
     routes.push({
       url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.date),
+      lastModified: parseDateSafe((post as any).date),
       changeFrequency: "monthly",
       priority: 0.5,
     });

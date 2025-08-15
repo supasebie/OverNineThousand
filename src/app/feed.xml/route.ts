@@ -1,6 +1,11 @@
 import { getPosts } from "@/lib/get-blog-by-slug";
 import { NextResponse } from "next/server";
 
+function toUTCStringSafe(value: unknown): string {
+  const d = new Date(value as any);
+  return isNaN(d.getTime()) ? new Date().toUTCString() : d.toUTCString();
+}
+
 export async function GET() {
   const posts = getPosts();
   const baseUrl = "https://overninethousand.com";
@@ -22,7 +27,7 @@ export async function GET() {
             <link>${baseUrl}/blog/${post.slug}</link>
             <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
             <description><![CDATA[${post.excerpt}]]></description>
-            <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+            <pubDate>${toUTCStringSafe((post as any).date)}</pubDate>
           </item>
         `
           )
