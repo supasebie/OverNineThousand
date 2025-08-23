@@ -78,11 +78,11 @@ export default function Home() {
                 <br />
                 <span className="text-[#858585]">Check out my developer tools</span>
               </Button>
-              {/* <Button href="/blog" icon={<BoxIcon className="size-4" />} variant="secondary">
+              <Button href="/blog" icon={<BoxIcon className="size-4" />} variant="secondary">
                 open --blog
                 <br />
                 <span className="text-[#858585]">View all my blog posts</span>
-              </Button> */}
+              </Button>
               {/* <Button href="/tutorials" icon={<BoxIcon className="size-4" />} variant="secondary">
                 open --tutorials
                 <br />
