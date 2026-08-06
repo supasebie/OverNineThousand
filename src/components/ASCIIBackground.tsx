@@ -23,18 +23,18 @@ const ASCIIBackground = ({ strong = false }: { strong?: boolean }) => {
         let char = " ";
         const rand = Math.random();
 
-        // Simpler distribution
-        if (rand < 0.005) {
-          // 0.5% heavy characters
+        // Heavier initial distribution (~14% populated spread)
+        if (rand < 0.02) {
+          // 2% heavy characters
           char = heavyChars[Math.floor(Math.random() * heavyChars.length)];
-        } else if (rand < 0.015) {
-          // 1% medium characters
+        } else if (rand < 0.06) {
+          // 4% medium characters
           char = mediumChars[Math.floor(Math.random() * mediumChars.length)];
-        } else if (rand < 0.03) {
-          // 1.5% light characters
+        } else if (rand < 0.14) {
+          // 8% light characters
           char = lightChars[Math.floor(Math.random() * lightChars.length)];
         }
-        // 97% remain as spaces
+        // 86% remain as spaces
 
         row.push(char);
       }
@@ -119,10 +119,14 @@ const ASCIIBackground = ({ strong = false }: { strong?: boolean }) => {
 
           if (newGrid[row] && newGrid[row][col] !== undefined) {
             const rand = Math.random();
-            if (rand < 0.8) {
+            if (rand < 0.5) {
               newGrid[row][col] = " ";
-            } else {
+            } else if (rand < 0.8) {
               newGrid[row][col] = lightChars[Math.floor(Math.random() * lightChars.length)];
+            } else if (rand < 0.95) {
+              newGrid[row][col] = mediumChars[Math.floor(Math.random() * mediumChars.length)];
+            } else {
+              newGrid[row][col] = heavyChars[Math.floor(Math.random() * heavyChars.length)];
             }
           }
         }
