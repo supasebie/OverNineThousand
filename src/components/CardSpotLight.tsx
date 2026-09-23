@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 interface CardSpotlightProps {
   title: string;
   year: string;
-  status: "In Progress" | "Finished" | "Discontinued";
+  status: "Live" | "In Progress" | "Finished" | "Discontinued";
   link?: string;
   description: string;
   type: "personal" | "client";
@@ -20,8 +20,6 @@ interface CardSpotlightProps {
 }
 
 const ProjectIcon: React.FC<{ projectType: CardSpotlightProps["projectType"] }> = ({ projectType }) => {
-  console.log({ projectType });
-
   switch (projectType) {
     case "website":
       return <GlobeIcon className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500 mr-2" />;
@@ -59,7 +57,13 @@ export default function CardSpotlight({
             <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">{year}</span>
           </h3>
           <div className="flex items-center gap-3 text-sm">
-            <span className={status === "In Progress" ? "text-purple-500" : "text-gray-500"}>{status}</span>
+            <span
+              className={
+                status === "Live" ? "text-emerald-600 font-semibold" : status === "In Progress" ? "text-purple-500" : "text-gray-500"
+              }
+            >
+              {status}
+            </span>
             <span className="text-gray-500">•</span>
             <span className="text-gray-500">{type}</span>
           </div>

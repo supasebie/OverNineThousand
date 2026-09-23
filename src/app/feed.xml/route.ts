@@ -1,5 +1,6 @@
 import { getPosts } from "@/lib/get-blog-by-slug";
 import { NextResponse } from "next/server";
+import { AUTHOR, SITE_URL } from "@/lib/site";
 
 function toUTCStringSafe(value: unknown): string {
   if (
@@ -15,16 +16,16 @@ function toUTCStringSafe(value: unknown): string {
 
 export async function GET() {
   const posts = getPosts();
-  const baseUrl = "https://overninethousand.com";
+  const baseUrl = SITE_URL;
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
     <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
       <channel>
         <title>OverNineThousand's Blog</title>
         <link>${baseUrl}/blog</link>
-        <description>Articles about web development, programming, and technology</description>
+        <description>Dev logs and launch notes from OverNineThousand</description>
         <language>en</language>
-        <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+        <lastBuildDate>${toUTCStringSafe(posts[0]?.updated ?? posts[0]?.date)}</lastBuildDate>
         <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml"/>
         ${posts
           .map(
@@ -35,6 +36,7 @@ export async function GET() {
             <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
             <description><![CDATA[${post.excerpt}]]></description>
             <pubDate>${toUTCStringSafe(post.date)}</pubDate>
+            <author>${AUTHOR.email} (${AUTHOR.name})</author>
           </item>
         `
           )

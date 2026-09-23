@@ -1,8 +1,16 @@
-"use server";
+import { pageMetadata } from "@/lib/site";
 import { Card } from "@/components/ui/card";
 import { hooks } from "@/config/hooks";
 import Link from "next/link";
 import { Store, Layout, Timer, Eye, Mouse, Database, Network, Lock } from "lucide-react";
+
+export const metadata = pageMetadata({
+  title: "Custom React Hooks Collection",
+  description:
+    "A collection of custom React hooks with live demos and TypeScript source: local storage, media queries, click outside, key combos, timers, geolocation and more.",
+  keywords: "React hooks, custom hooks, TypeScript hooks, useLocalStorage, useMediaQuery, useClickOutside",
+  path: "/react-hooks",
+});
 
 // Icon mapping
 const IconMap = {

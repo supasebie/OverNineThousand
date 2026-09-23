@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { tutorials } from "@/config/tutorials";
+import { pageMetadata } from "@/lib/site";
+
+export const metadata = pageMetadata({
+  title: "Web Development Tutorials",
+  description:
+    "Step-by-step tutorials on TypeScript, React, Node.js and Next.js: REST and GraphQL APIs, realtime chat with WebSockets, custom hooks, infinite scroll, caching and more.",
+  path: "/tutorials",
+});
 
 export default function TutorialsPage() {
   return (

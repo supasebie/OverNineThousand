@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import ConversionClient from "./page.client";
 
 const unitTypes = {
@@ -91,6 +92,7 @@ export async function generateMetadata({ params }: ConversionPageProps): Promise
     return {
       title: "Invalid Conversion",
       description: "The requested conversion is not valid.",
+      robots: { index: false },
     };
   }
 
@@ -104,9 +106,10 @@ export async function generateMetadata({ params }: ConversionPageProps): Promise
   const title = `Convert ${fromUnit.name} to ${toUnit.name} - ${typeInfo.name} Converter`;
   const description = `Convert ${fromUnit.name} to ${toUnit.name} with precision. Fast and accurate ${typeInfo.name.toLowerCase()} conversion tool with instant results.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
+    path: `/tools/utilities/unit-converter/${type}/${from}-to-${to}`,
     keywords: [
       `${fromUnit.name} to ${toUnit.name}`,
       `${from} to ${to}`,
@@ -117,17 +120,18 @@ export async function generateMetadata({ params }: ConversionPageProps): Promise
       to,
       type,
     ],
-    openGraph: {
-      title,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary",
-      title,
-      description,
-    },
-  };
+  });
+}
+
+// Prerender every pair the sitemap lists, so these pages are served as static HTML.
+export function generateStaticParams() {
+  return Object.entries(unitTypes).flatMap(([type, { units }]) =>
+    Object.keys(units).flatMap((from) =>
+      Object.keys(units)
+        .filter((to) => to !== from)
+        .map((to) => ({ type, conversion: `${from}-to-${to}` }))
+    )
+  );
 }
 
 export default async function ConversionPage({ params }: ConversionPageProps) {

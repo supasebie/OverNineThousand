@@ -7,12 +7,14 @@ import { getPosts } from "@/lib/get-blog-by-slug";
 import { Card } from "@/components/ui/card";
 import { BoxIcon, Terminal } from "lucide-react";
 import { GitHubLogoIcon, LinkedInLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
-import { Metadata } from "next";
 import { PackageHooks } from "../hooks/packagehooks";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Sitemap - OverNineThousand - Freelance Fullstack Development",
-};
+export const metadata = pageMetadata({
+  title: "Sitemap",
+  description: "Every page on OverNineThousand: tools, apps, React hooks, tutorials, blog posts and projects.",
+  path: "/site-map",
+});
 
 export default function SitemapPage() {
   return (

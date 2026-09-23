@@ -1,11 +1,5 @@
 import Link from "next/link";
-import { Metadata } from "next";
 import Footer from "@/components/Footer";
-
-export const metadata: Metadata = {
-  title: "Tutorials - OverNineThousand",
-  description: "Learn web development, programming, and technology through detailed tutorials",
-};
 
 export default function TutorialsLayout({ children }: { children: React.ReactNode }) {
   return (

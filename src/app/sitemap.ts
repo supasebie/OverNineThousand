@@ -4,362 +4,108 @@ import { getPosts } from "@/lib/get-blog-by-slug";
 import { MetadataRoute } from "next";
 import { apps } from "@/config/apps";
 import { tutorials } from "@/config/tutorials";
-import { PackageHooks } from "./hooks/packagehooks";
 import { httpCodes } from "@/app/data/httpCodes";
+import { SITE_URL } from "@/lib/site";
 
-// Function to get emojis for sitemap
-async function getEmojis() {
-  try {
-    const response = await fetch(
-      "https://raw.githubusercontent.com/github/gemoji/refs/heads/master/db/emoji.json"
-    );
-    return response.json();
-  } catch (error) {
-    console.error("Failed to fetch emojis for sitemap:", error);
-    return [];
-  }
+// Only real dates go in <lastmod>. Google ignores the field for a site that stamps every
+// URL with the build time, so pages without a known date simply leave it out.
+function dateOrUndefined(value: unknown): Date | undefined {
+  if (typeof value !== "string" && typeof value !== "number" && !(value instanceof Date)) return undefined;
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? undefined : d;
 }
 
-// Safely parse a date-like value; fall back to now if invalid
-function parseDateSafe(value: unknown): Date {
-  if (typeof value === "string" || typeof value === "number" || value instanceof Date) {
-    const d = new Date(value as string | number | Date);
-    return isNaN(d.getTime()) ? new Date() : d;
-  }
-  return new Date();
-}
+// Keep in sync with the unit tables in the converter pages; each pair is a prerendered page.
+const DATA_SIZE_UNITS = ["bit", "byte", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"];
+const UNIT_CONVERTER_UNITS = {
+  length: ["mm", "cm", "m", "km", "in", "ft", "yd", "mi"],
+  weight: ["mg", "g", "kg", "oz", "lb", "t"],
+  temperature: ["c", "f", "k"],
+  area: ["mm2", "cm2", "m2", "km2", "in2", "ft2", "ac"],
+  volume: ["ml", "l", "m3", "gal", "qt", "pt", "fl_oz"],
+};
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Base URL for the website
-  const baseUrl = "https://overninethousand.com";
+// The category names in the gemoji data the emoji picker reads. Hard-coded so the sitemap
+// doesn't depend on a network fetch succeeding at build time.
+const EMOJI_CATEGORIES = [
+  "Smileys & Emotion",
+  "People & Body",
+  "Animals & Nature",
+  "Food & Drink",
+  "Travel & Places",
+  "Activities",
+  "Objects",
+  "Symbols",
+  "Flags",
+];
 
-  // Start with the main tools page
+const POPULAR_EMOJIS = [
+  "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰",
+  "😘", "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🤩", "🥳", "😏",
+  "😒", "😞", "😔", "😟", "😕", "🙁", "☹️", "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠",
+  "😡", "🤬", "🤯", "😳", "🥵", "🥶", "😱", "😨", "😰", "😥", "😓", "🤗", "🤔", "🤭", "🤫", "🤥",
+  "😶", "😐", "😑", "😬", "🙄", "😯", "😦", "😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😵", "🤐",
+  "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠", "😈", "👍", "👎", "👌", "✌️", "🤞", "🤟",
+  "🤘", "🤙", "👈", "👉", "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎", "💔", "🔥", "💯",
+  "💥", "💫", "⭐", "🌟", "✨", "💎", "🎉", "🎊",
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const url = (path: string, lastModified?: Date) => ({
+    url: `${SITE_URL}${path}`,
+    ...(lastModified && { lastModified }),
+  });
+
+  const posts = getPosts();
+  const latestPost = posts[0] ? dateOrUndefined(posts[0].updated ?? posts[0].date) : undefined;
+
   const routes: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/tools`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/site-map`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tutorials`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
+    url("/", latestPost),
+    url("/blog", latestPost),
+    url("/projects"),
+    url("/contact"),
+    url("/tools"),
+    url("/apps"),
+    url("/react-hooks"),
+    url("/tutorials"),
+    url("/site-map"),
   ];
 
-  // Add all tutorials
-  tutorials.forEach((tutorial) => {
-    routes.push({
-      url: `${baseUrl}/tutorials/${tutorial.id}`,
-      lastModified: parseDateSafe(tutorial.date),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    });
-  });
+  posts.forEach((post) => routes.push(url(`/blog/${post.slug}`, dateOrUndefined(post.updated ?? post.date))));
 
-  // Add all tool pages
+  tutorials.forEach((tutorial) => routes.push(url(`/tutorials/${tutorial.id}`, dateOrUndefined(tutorial.date))));
+
   Object.values(tools).forEach((category) => {
-    category.items.forEach((tool) => {
-      routes.push({
-        url: `${baseUrl}${tool.path}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.8,
-      });
-    });
+    routes.push(url(`/tools/${category.path}`));
+    category.items.forEach((tool) => routes.push(url(tool.path)));
   });
 
-  // Add all category pages
-  Object.values(tools).forEach((category) => {
-    routes.push({
-      url: `${baseUrl}/tools/${category.path}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    });
-  });
-
-  // add all hooks pages
   Object.values(hooks).forEach((category) => {
-    // Add hooks category pages
-    category.items.forEach((hook) => {
-      routes.push({
-        url: `${baseUrl}/react-hooks/${hook.id}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.8,
+    category.items.forEach((hook) => routes.push(url(hook.path)));
+  });
+
+  apps.forEach((app) => routes.push(url(app.path)));
+
+  httpCodes.forEach((httpCode) => routes.push(url(`/tools/dev/http-codes/${httpCode.code}`)));
+
+  DATA_SIZE_UNITS.forEach((from) => {
+    DATA_SIZE_UNITS.forEach((to) => {
+      if (from !== to) routes.push(url(`/tools/utilities/data-size-converter/${from}-to-${to}`));
+    });
+  });
+
+  Object.entries(UNIT_CONVERTER_UNITS).forEach(([type, units]) => {
+    units.forEach((from) => {
+      units.forEach((to) => {
+        if (from !== to) routes.push(url(`/tools/utilities/unit-converter/${type}/${from}-to-${to}`));
       });
     });
   });
 
-  routes.push({
-    url: `${baseUrl}/react-hooks`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  });
-
-  // Add all blog posts
-  const posts = getPosts();
-  posts.forEach((post) => {
-    routes.push({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: parseDateSafe(post.date),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    });
-  });
-
-  // Add all app pages
-  apps.forEach((app) => {
-    routes.push({
-      url: `${baseUrl}${app.path}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    });
-  });
-
-  // Add all hooks pages from PackageHooks
-  PackageHooks.forEach((category) => {
-    category.items.forEach((item) => {
-      routes.push({
-        url: `${baseUrl}${item.href}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.8,
-      });
-    });
-  });
-
-  // Add main hooks page
-  routes.push({
-    url: `${baseUrl}/hooks`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  });
-
-  // Add all HTTP status codes
-  httpCodes.forEach((httpCode) => {
-    routes.push({
-      url: `${baseUrl}/tools/dev/http-codes/${httpCode.code}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    });
-  });
-
-  // Add data size converter specific conversion pages
-  const units = ["bit", "byte", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"];
-  units.forEach((fromUnit) => {
-    units.forEach((toUnit) => {
-      if (fromUnit !== toUnit) {
-        routes.push({
-          url: `${baseUrl}/tools/utilities/data-size-converter/${fromUnit}-to-${toUnit}`,
-          lastModified: new Date(),
-          changeFrequency: "monthly",
-          priority: 0.7,
-        });
-      }
-    });
-  });
-
-  // Add unit converter specific conversion pages
-  const unitConverterTypes = {
-    length: ["mm", "cm", "m", "km", "in", "ft", "yd", "mi"],
-    weight: ["mg", "g", "kg", "oz", "lb", "t"],
-    temperature: ["c", "f", "k"],
-    area: ["mm2", "cm2", "m2", "km2", "in2", "ft2", "ac"],
-    volume: ["ml", "l", "m3", "gal", "qt", "pt", "fl_oz"],
-  };
-
-  Object.entries(unitConverterTypes).forEach(([type, typeUnits]) => {
-    typeUnits.forEach((fromUnit) => {
-      typeUnits.forEach((toUnit) => {
-        if (fromUnit !== toUnit) {
-          routes.push({
-            url: `${baseUrl}/tools/utilities/unit-converter/${type}/${fromUnit}-to-${toUnit}`,
-            lastModified: new Date(),
-            changeFrequency: "monthly",
-            priority: 0.7,
-          });
-        }
-      });
-    });
-  });
-
-  // Add emoji pages
-  try {
-    const emojis = await getEmojis();
-
-    // Get unique categories for category pages
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const categories = [...new Set(emojis.map((emoji: any) => emoji.category))];
-    categories.forEach((category) => {
-      routes.push({
-        url: `${baseUrl}/tools/utilities/emoji-picker/category/${encodeURIComponent(category as string)}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.6,
-      });
-    });
-
-    // Add popular emojis (limit to avoid huge sitemap)
-    const popularEmojis = [
-      "😀",
-      "😃",
-      "😄",
-      "😁",
-      "😆",
-      "😅",
-      "😂",
-      "🤣",
-      "😊",
-      "😇",
-      "🙂",
-      "🙃",
-      "😉",
-      "😌",
-      "😍",
-      "🥰",
-      "😘",
-      "😗",
-      "😙",
-      "😚",
-      "😋",
-      "😛",
-      "😝",
-      "😜",
-      "🤪",
-      "🤨",
-      "🧐",
-      "🤓",
-      "😎",
-      "🤩",
-      "🥳",
-      "😏",
-      "😒",
-      "😞",
-      "😔",
-      "😟",
-      "😕",
-      "🙁",
-      "☹️",
-      "😣",
-      "😖",
-      "😫",
-      "😩",
-      "🥺",
-      "😢",
-      "😭",
-      "😤",
-      "😠",
-      "😡",
-      "🤬",
-      "🤯",
-      "😳",
-      "🥵",
-      "🥶",
-      "😱",
-      "😨",
-      "😰",
-      "😥",
-      "😓",
-      "🤗",
-      "🤔",
-      "🤭",
-      "🤫",
-      "🤥",
-      "😶",
-      "😐",
-      "😑",
-      "😬",
-      "🙄",
-      "😯",
-      "😦",
-      "😧",
-      "😮",
-      "😲",
-      "🥱",
-      "😴",
-      "🤤",
-      "😪",
-      "😵",
-      "🤐",
-      "🥴",
-      "🤢",
-      "🤮",
-      "🤧",
-      "😷",
-      "🤒",
-      "🤕",
-      "🤑",
-      "🤠",
-      "😈",
-      "👍",
-      "👎",
-      "👌",
-      "✌️",
-      "🤞",
-      "🤟",
-      "🤘",
-      "🤙",
-      "👈",
-      "👉",
-      "❤️",
-      "🧡",
-      "💛",
-      "💚",
-      "💙",
-      "💜",
-      "🖤",
-      "🤍",
-      "🤎",
-      "💔",
-      "🔥",
-      "💯",
-      "💥",
-      "💫",
-      "⭐",
-      "🌟",
-      "✨",
-      "💎",
-      "🎉",
-      "🎊",
-    ];
-
-    popularEmojis.forEach((emoji) => {
-      routes.push({
-        url: `${baseUrl}/tools/utilities/emoji-picker/${encodeURIComponent(emoji)}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.5,
-      });
-    });
-  } catch (error) {
-    console.error("Failed to add emoji routes to sitemap:", error);
-  }
+  EMOJI_CATEGORIES.forEach((category) =>
+    routes.push(url(`/tools/utilities/emoji-picker/category/${encodeURIComponent(category)}`))
+  );
+  POPULAR_EMOJIS.forEach((emoji) => routes.push(url(`/tools/utilities/emoji-picker/${encodeURIComponent(emoji)}`)));
 
   return routes;
 }

@@ -1,3 +1,8 @@
+import { Metadata } from "next";
+
+// This file is the body of a project modal, not a standalone page, so keep its route out of search.
+export const metadata: Metadata = { robots: { index: false, follow: true } };
+
 export default function Choicyful() {
   return (
     <div>

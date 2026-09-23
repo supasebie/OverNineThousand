@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import EmojiDetailClient from "./page.client";
 
 async function getEmojis() {
@@ -28,15 +29,17 @@ export async function generateMetadata({ params }: EmojiPageProps): Promise<Meta
     return {
       title: "Emoji Not Found",
       description: "The requested emoji could not be found.",
+      robots: { index: false },
     };
   }
 
   const title = `${emojiData.emoji} ${emojiData.description} - Emoji Details`;
   const description = `Learn about the ${emojiData.description} emoji (${emojiData.emoji}). Copy emoji, view shortcodes, Unicode information, and usage examples.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
+    path: `/tools/utilities/emoji-picker/${encodeURIComponent(emojiData.emoji)}`,
     keywords: [
       emojiData.description,
       emojiData.emoji,
@@ -46,17 +49,7 @@ export async function generateMetadata({ params }: EmojiPageProps): Promise<Meta
       "unicode emoji",
       "emoji meaning",
     ],
-    openGraph: {
-      title,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary",
-      title,
-      description,
-    },
-  };
+  });
 }
 
 export default async function EmojiDetailPage({ params }: EmojiPageProps) {

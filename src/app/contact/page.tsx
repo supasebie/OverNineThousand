@@ -7,11 +7,14 @@ import { Card } from "@/components/ui/card";
 
 import { SocialLink } from "@/components/Footer";
 import Button from "@/components/Button";
-import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Contact - OverNineThousand - Freelance Fullstack Development",
-};
+export const metadata = pageMetadata({
+  title: "Contact: Hire a Freelance Fullstack Developer",
+  description:
+    "Get in touch with Joseph Sebastian Ruiz (OverNineThousand) about Flutter mobile apps, .NET APIs or Angular/React websites. Based in Los Angeles, working remotely.",
+  path: "/contact",
+});
 
 export default function Contact() {
   return (

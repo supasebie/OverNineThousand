@@ -1,6 +1,5 @@
 import CardSpotlight from "@/components/CardSpotLight";
 import { Terminal } from "lucide-react";
-import { Metadata } from "next";
 import Brolt from "../brolt/page";
 import SwiftTech from "../swifttech/page";
 import SosPassport from "../sos-passport/page";
@@ -8,11 +7,14 @@ import Choicyful from "../choicyful/page";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Projects - OverNineThousand",
-  description: "A collection of my personal and client projects in web development and software engineering.",
-};
+export const metadata = pageMetadata({
+  title: "Projects",
+  description:
+    "Personal and client projects by OverNineThousand, including Psychic Tournament, an ESP and intuition game for Android and iOS built with Flutter and Supabase.",
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   return (
@@ -36,10 +38,10 @@ export default function ProjectsPage() {
         <div className="space-y-8">
           <CardSpotlight
             title="PsychicTournament"
-            year="2025"
-            status="In Progress"
+            year="2026"
+            status="Live"
             link="https://psychictournament.online"
-            description="Psychic Tournament Online is a Zener Card game with dynamic stat tracking and daily/weekly leaderboards. Think you have what it takes to score against other psychics online? Give it a try!"
+            description="An ESP and intuition game, out now on Android and iOS. Three ranked games (Zener, Dowsing and Star Seed), each scored against a 20% chance baseline, with a once-a-day Daily Vision, conviction calls, global leaderboards and blindfold MindSight training. Built with Flutter and Supabase."
             type="personal"
             projectType="app"
             techs={["Flutter", "Dart", "Supabase"]}

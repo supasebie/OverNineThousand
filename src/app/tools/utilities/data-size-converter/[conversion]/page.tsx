@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import ConversionClient from "./page.client";
 
 type Unit = "bit" | "byte" | "kb" | "mb" | "gb" | "tb" | "pb" | "eb" | "zb" | "yb";
@@ -113,6 +114,7 @@ export async function generateMetadata({ params }: ConversionPageProps): Promise
     return {
       title: "Invalid Conversion",
       description: "The requested conversion is not valid.",
+      robots: { index: false },
     };
   }
 
@@ -123,9 +125,10 @@ export async function generateMetadata({ params }: ConversionPageProps): Promise
   const title = `Convert ${fromUnit.name} to ${toUnit.name} - Data Size Converter`;
   const description = `Convert ${fromUnit.name} (${fromUnit.symbol}) to ${toUnit.name} (${toUnit.symbol}) with precision. Fast and accurate data size conversion tool with binary and decimal calculations.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
+    path: `/tools/utilities/data-size-converter/${from}-to-${to}`,
     keywords: [
       `${fromUnit.name} to ${toUnit.name}`,
       `${fromUnit.symbol} to ${toUnit.symbol}`,
@@ -137,17 +140,15 @@ export async function generateMetadata({ params }: ConversionPageProps): Promise
       from,
       to,
     ],
-    openGraph: {
-      title,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary",
-      title,
-      description,
-    },
-  };
+  });
+}
+
+// Prerender every pair the sitemap lists, so these pages are served as static HTML.
+export function generateStaticParams() {
+  const units = Object.keys(UNITS);
+  return units.flatMap((from) =>
+    units.filter((to) => to !== from).map((to) => ({ conversion: `${from}-to-${to}` }))
+  );
 }
 
 export default async function ConversionPage({ params }: ConversionPageProps) {

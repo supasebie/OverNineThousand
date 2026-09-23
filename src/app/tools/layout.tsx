@@ -22,46 +22,10 @@ import { tools } from "@/config/tools";
 import { FavoritesProvider } from "@/contexts/favorites-context";
 import { FavoriteButton } from "@/components/tools/favorite-button";
 import { FavoritesList } from "@/components/tools/favorites-list";
-import { Metadata } from "next";
-import { headers } from "next/headers";
-import { getToolMetadata } from "@/lib/get-tool-metadata";
 import Link from "next/link";
 import { CommandMenu } from "../../components/command-menu";
 import Footer from "@/components/Footer";
 import { NewsletterCTA } from "@/components/tools/newsletter-cta";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || "";
-
-  // Split path and filter out empty strings
-  const segments = pathname.split("/").filter(Boolean);
-
-  // Check if we're in a tool path (/tools/category/toolId)
-  if (segments.length >= 3 && segments[0] === "tools") {
-    const toolId = segments[2]; // Get the third segment (toolId)
-    return getToolMetadata(toolId);
-  }
-
-  // Default metadata for /tools page
-  return {
-    title: "Developer Tools & Utilities | OverNineThousand",
-    description:
-      "Free online developer tools built by OverNineThousand. Including JSON formatter, Base64 encoder/decoder, hash generator, text tools, and more. Simple, fast, and secure.",
-    keywords:
-      "developer tools, online tools, web tools, JSON formatter, Base64 encoder, hash generator, OverNineThousand",
-    openGraph: {
-      title: "Developer Tools & Utilities | OverNineThousand",
-      description:
-        "Free online developer tools built by OverNineThousand. Including JSON formatter, Base64 encoder/decoder, hash generator, and more.",
-      type: "website",
-      url: "https://overninethousand.com/tools",
-    },
-    alternates: {
-      canonical: "https://overninethousand.com/tools",
-    },
-  };
-}
 
 export default function ToolsLayout({ children }: { children: React.ReactNode }) {
   // Calculate total tools

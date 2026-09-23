@@ -5,41 +5,6 @@ import Link from "next/link";
 import { hooks } from "@/config/hooks";
 import { HooksList } from "@/components/hooks/hooks-list";
 import { HooksBreadcrumb } from "@/components/hooks/hooks-breadcrumb";
-import { headers } from "next/headers";
-import { Metadata } from "next";
-import { getHookMetadata } from "@/lib/get-hook-metadata";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || "";
-
-  // Split path and filter out empty strings
-  const segments = pathname.split("/").filter(Boolean);
-
-  // Check if we're in a tool path (/tools/category/toolId)
-  if (segments.length >= 2 && segments[0] === "react-hooks") {
-    const toolId = segments[1]; // Get the third segment (toolId)
-    return getHookMetadata(toolId);
-  }
-
-  // Default metadata for /tools page
-  return {
-    title: "React Hooks Collection | OverNineThousand",
-    description:
-      "Explore a collection of custom React hooks built by OverNineThousand. Enhance your React applications with these reusable and efficient hooks.",
-    keywords: "React hooks, custom hooks, React development, OverNineThousand, web development",
-    openGraph: {
-      title: "React Hooks Collection | OverNineThousand",
-      description:
-        "Explore a collection of custom React hooks built by OverNineThousand. Enhance your React applications with these reusable and efficient hooks.",
-      type: "website",
-      url: "https://overninethousand.com/react-hooks",
-    },
-    alternates: {
-      canonical: "https://overninethousand.com/react-hooks",
-    },
-  };
-}
 
 export default function HooksLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import EmojiCategoryClient from "./page.client";
 
 async function getEmojis() {
@@ -23,21 +24,12 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const title = `${decodedCategory} Emojis - Emoji Picker`;
   const description = `Browse and copy ${decodedCategory} emojis. Find the perfect emoji for your messages, social media posts, and content.`;
 
-  return {
+  return pageMetadata({
     title,
     description,
+    path: `/tools/utilities/emoji-picker/category/${encodeURIComponent(decodedCategory)}`,
     keywords: [`${decodedCategory} emojis`, "emoji picker", "emoji copy", "unicode emojis", decodedCategory],
-    openGraph: {
-      title,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary",
-      title,
-      description,
-    },
-  };
+  });
 }
 
 export default async function EmojiCategoryPage({ params }: CategoryPageProps) {

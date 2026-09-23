@@ -2,11 +2,14 @@ import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { Code } from "lucide-react";
 import { apps } from "@/config/apps";
-import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Apps list - OverNineThousand - Freelance Fullstack Development",
-};
+export const metadata = pageMetadata({
+  title: "Free Browser Games & Web Apps",
+  description:
+    "Free games and small web apps that run in your browser: 2048, a memory game, decision wheel, tier list maker, pixel art creator, word cloud generator and more.",
+  path: "/apps",
+});
 
 export default function Apps() {
   return (

@@ -29,9 +29,9 @@ export default function Footer() {
         <Link href="/" className="text-sm text-purple-500 hover:text-purple-600 mx-2">
           Home
         </Link>
-        {/* <Link href="/blog" className="text-sm text-purple-500 hover:text-purple-600 mx-2">
+        <Link href="/blog" className="text-sm text-purple-500 hover:text-purple-600 mx-2">
           Blog
-        </Link> */}
+        </Link>
         <Link href="/tools" className="text-sm text-purple-500 hover:text-purple-600 mx-2">
           Tools
         </Link>
