@@ -79,7 +79,7 @@ const structuredData = {
       name: "PostQuake",
       url: POSTQUAKE.url,
       description:
-        "Turns an app's store link into a week of TikTok-style slideshows and videos for TikTok, Instagram Reels, YouTube Shorts and Facebook.",
+        "Turns a link to an app, website, online shop or newsletter into a week of TikTok-style slideshows and videos for TikTok, Instagram Reels, YouTube Shorts and Facebook.",
       applicationCategory: "BusinessApplication",
       sameAs: [POSTQUAKE.tiktokUrl, POSTQUAKE.instagramUrl, POSTQUAKE.youtubeUrl],
       author: { "@id": `${SITE_URL}/#person` },
@@ -118,7 +118,7 @@ export default function Home() {
               <a href={POSTQUAKE.url} className="text-purple-600 hover:text-purple-700 underline underline-offset-2">
                 PostQuake
               </a>
-              , a tool that turns an app&apos;s store link into a week of short-form posts.
+              , a tool that turns a link to any app, website or online shop into a week of short-form posts.
             </p>
             <div className="flex gap-3">
               <SocialLink
@@ -177,9 +177,10 @@ export default function Home() {
               </h3>
               <p className="text-sm font-semibold text-red-500 mb-3">Posts that shake the feed.</p>
               <p className="text-gray-700 leading-relaxed mb-5">
-                Paste your app&apos;s store link and get back a week of TikTok-style slideshows and videos, written in your
-                customers&apos; own words and ready for TikTok, Reels, Shorts and Facebook. Its first customer is my own game:
-                seven ready-to-post sets for about $2.73 in images.
+                Paste a link to your app, website, online shop or newsletter and get back a week of TikTok-style slideshows
+                and videos, written in your customers&apos; own words and ready for TikTok, Reels, Shorts and Facebook. If it
+                lives online, PostQuake can market it. Its first customer is my own game: seven ready-to-post sets for about
+                $2.73 in images.
               </p>
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <a
@@ -269,7 +270,7 @@ export default function Home() {
               year="2026"
               status="Early Access"
               link={POSTQUAKE.url}
-              description="Short-form marketing for app makers. Paste an App Store, Google Play or website link and PostQuake researches who the app is for, writes hooks in their own words, and renders a week of TikTok-style slideshows and videos for TikTok, Reels, Shorts and Facebook. Every batch is checked for repeats, AI imagery is labelled, and music is licensed."
+              description="Short-form marketing for anything with a link. Paste an app's store listing or any website (a web app, online shop, newsletter or portfolio) and PostQuake researches who it's for, writes hooks in their own words, and renders a week of TikTok-style slideshows and videos for TikTok, Reels, Shorts and Facebook. Every batch is checked for repeats, AI imagery is labelled, and music is licensed."
               type="personal"
               projectType="app"
               techs={["TypeScript", "Node.js", "Supabase"]}
