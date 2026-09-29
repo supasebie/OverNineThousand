@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 interface CardSpotlightProps {
   title: string;
   year: string;
-  status: "Live" | "In Progress" | "Finished" | "Discontinued";
+  status: "Live" | "Early Access" | "In Progress" | "Finished" | "Discontinued";
   link?: string;
   description: string;
   type: "personal" | "client";
@@ -59,7 +59,13 @@ export default function CardSpotlight({
           <div className="flex items-center gap-3 text-sm">
             <span
               className={
-                status === "Live" ? "text-emerald-600 font-semibold" : status === "In Progress" ? "text-purple-500" : "text-gray-500"
+                status === "Live"
+                  ? "text-emerald-600 font-semibold"
+                  : status === "Early Access"
+                    ? "text-red-500 font-semibold"
+                    : status === "In Progress"
+                      ? "text-purple-500"
+                      : "text-gray-500"
               }
             >
               {status}

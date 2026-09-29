@@ -2,7 +2,7 @@ import CardSpotlight from "@/components/CardSpotLight";
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import Button from "@/components/Button";
 import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
-import { BoxIcon, Smartphone, Sparkles } from "lucide-react";
+import { Activity, BoxIcon, Smartphone, Sparkles } from "lucide-react";
 import { Terminal } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -11,15 +11,16 @@ import Footer, { SocialLink } from "@/components/Footer";
 import { tutorials } from "@/config/tutorials";
 import ASCIIBackground from "@/components/ASCIIBackground";
 import JsonLd from "@/components/JsonLd";
-import { AUTHOR, PSYCHIC_TOURNAMENT, SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/site";
+import { AUTHOR, POSTQUAKE, PSYCHIC_TOURNAMENT, SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/site";
 
 const LAUNCH_POST = "/blog/2026-09-23-psychic-tournament-is-live-on-android-and-ios";
+const POSTQUAKE_POST = "/blog/2026-09-29-introducing-postquake";
 
 export const metadata: Metadata = {
   ...pageMetadata({
     title: "OverNineThousand | Freelance Fullstack & Mobile App Developer",
     description:
-      "Joseph Sebastian Ruiz: freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament, now on Android and iOS.",
+      "Joseph Sebastian Ruiz: freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament and PostQuake.",
     path: "/",
   }),
   // The home page carries the brand in full, so it skips the "| OverNineThousand" template.
@@ -72,6 +73,18 @@ const structuredData = {
       author: { "@id": `${SITE_URL}/#person` },
       publisher: { "@id": `${SITE_URL}/#organization` },
     },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${POSTQUAKE.url}#app`,
+      name: "PostQuake",
+      url: POSTQUAKE.url,
+      description:
+        "Turns an app's store link into a week of TikTok-style slideshows and videos for TikTok, Instagram Reels, YouTube Shorts and Facebook.",
+      applicationCategory: "BusinessApplication",
+      sameAs: [POSTQUAKE.tiktokUrl, POSTQUAKE.instagramUrl, POSTQUAKE.youtubeUrl],
+      author: { "@id": `${SITE_URL}/#person` },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
   ],
 };
 
@@ -101,7 +114,11 @@ export default function Home() {
               <a href={PSYCHIC_TOURNAMENT.url} className="text-purple-600 hover:text-purple-700 underline underline-offset-2">
                 Psychic Tournament
               </a>
-              , is out now on Google Play and the App Store.
+              , is out now on Google Play and the App Store, and I&apos;m now building{" "}
+              <a href={POSTQUAKE.url} className="text-purple-600 hover:text-purple-700 underline underline-offset-2">
+                PostQuake
+              </a>
+              , a tool that turns an app&apos;s store link into a week of short-form posts.
             </p>
             <div className="flex gap-3">
               <SocialLink
@@ -120,49 +137,89 @@ export default function Home() {
 
         <section className="mb-12" aria-labelledby="launch-heading">
           <h2 className="text-sm text-gray-500 mb-4">→ news --latest</h2>
-          <div className="relative overflow-hidden rounded-lg border border-purple-300 bg-gradient-to-br from-purple-50 via-white to-indigo-50 p-6 shadow-[0_0_40px_-18px_rgba(168,85,247,0.8)]">
-            <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-600 px-2.5 py-1 font-semibold uppercase tracking-wider text-white">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          <div className="relative overflow-hidden rounded-lg border border-orange-300 bg-gradient-to-br from-orange-50 via-white to-pink-50 p-6 shadow-[0_0_48px_-18px_rgba(255,61,61,0.75)]">
+            {/* Seismograph trace, after PostQuake's logo. */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 400 60"
+              preserveAspectRatio="none"
+              className="pointer-events-none absolute inset-x-0 top-0 h-14 w-full text-orange-400/25"
+            >
+              <polyline
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinejoin="round"
+                points="0,30 70,30 82,24 92,36 104,30 150,30 162,8 174,54 186,14 198,46 210,22 222,34 234,30 290,30 300,26 310,34 320,30 400,30"
+              />
+            </svg>
+            <div className="relative">
+              <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 px-2.5 py-1 font-semibold uppercase tracking-wider text-white">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                  </span>
+                  Early access open
                 </span>
-                Just launched
-              </span>
-              <time dateTime="2026-09-23" className="text-gray-500">
-                {formatPostDate("2026-09-23")}
-              </time>
+                <time dateTime="2026-09-29" className="text-gray-500">
+                  {formatPostDate("2026-09-29")}
+                </time>
+              </div>
+              <h3 id="launch-heading" className="text-2xl font-bold text-gray-900 mb-1 flex items-center gap-2">
+                <Activity className="h-6 w-6 text-red-500" />
+                <span>
+                  Introducing{" "}
+                  <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 bg-clip-text text-transparent">
+                    PostQuake
+                  </span>
+                </span>
+              </h3>
+              <p className="text-sm font-semibold text-red-500 mb-3">Posts that shake the feed.</p>
+              <p className="text-gray-700 leading-relaxed mb-5">
+                Paste your app&apos;s store link and get back a week of TikTok-style slideshows and videos, written in your
+                customers&apos; own words and ready for TikTok, Reels, Shorts and Facebook. Its first customer is my own game:
+                seven ready-to-post sets for about $2.73 in images.
+              </p>
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
+                <a
+                  href={POSTQUAKE.earlyAccessUrl}
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-110 transition"
+                >
+                  Get early access →
+                </a>
+                <Link
+                  href={POSTQUAKE_POST}
+                  className="inline-flex items-center justify-center gap-2 rounded-md border border-orange-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:border-red-500 transition-colors"
+                >
+                  Read the announcement
+                </Link>
+                <a
+                  href={POSTQUAKE.outputUrl}
+                  className="inline-flex items-center justify-center gap-2 rounded-md border border-orange-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:border-red-500 transition-colors"
+                >
+                  See real output
+                </a>
+              </div>
             </div>
-            <h3 id="launch-heading" className="text-2xl font-bold text-purple-600 mb-2">
+          </div>
+
+          <div className="mt-4 flex flex-col gap-2 rounded-lg border border-purple-200 bg-white/80 px-4 py-3 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">
+            <span className="inline-flex items-center gap-2 font-semibold text-purple-600">
+              <Smartphone className="h-4 w-4" />
               Psychic Tournament is live on Android &amp; iOS
-            </h3>
-            <p className="text-gray-700 leading-relaxed mb-5">
-              My ESP and intuition game is out now. Zener cards, Dowsing and Star Seed, each scored honestly against a
-              20% chance baseline, plus a Daily Vision, global leaderboards and blindfold MindSight training. Free, with no
-              account needed.
-            </p>
-            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
-              <a
-                href={PSYCHIC_TOURNAMENT.googlePlayUrl}
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-purple-700 transition-colors"
-              >
-                <Smartphone className="h-4 w-4" />
-                Get it on Google Play
+            </span>
+            <span className="flex flex-wrap gap-x-3 gap-y-1">
+              <a href={PSYCHIC_TOURNAMENT.googlePlayUrl} className="text-gray-600 underline underline-offset-2 hover:text-purple-600">
+                Google Play
               </a>
-              <a
-                href={PSYCHIC_TOURNAMENT.appStoreUrl}
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-purple-700 transition-colors"
-              >
-                <Smartphone className="h-4 w-4" />
-                Download on the App Store
+              <a href={PSYCHIC_TOURNAMENT.appStoreUrl} className="text-gray-600 underline underline-offset-2 hover:text-purple-600">
+                App Store
               </a>
-              <Link
-                href={LAUNCH_POST}
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-purple-300 bg-white px-4 py-2.5 text-sm font-semibold text-purple-600 hover:border-purple-500 transition-colors"
-              >
-                Read the launch post →
+              <Link href={LAUNCH_POST} className="text-gray-600 underline underline-offset-2 hover:text-purple-600">
+                Launch post
               </Link>
-            </div>
+            </span>
           </div>
         </section>
 
@@ -207,6 +264,17 @@ export default function Home() {
         <section className="mb-12">
           <h2 className="text-sm text-gray-500 mb-4">→ featured-projects --list</h2>
           <div className="space-y-8">
+            <CardSpotlight
+              title="PostQuake"
+              year="2026"
+              status="Early Access"
+              link={POSTQUAKE.url}
+              description="Short-form marketing for app makers. Paste an App Store, Google Play or website link and PostQuake researches who the app is for, writes hooks in their own words, and renders a week of TikTok-style slideshows and videos for TikTok, Reels, Shorts and Facebook. Every batch is checked for repeats, AI imagery is labelled, and music is licensed."
+              type="personal"
+              projectType="app"
+              techs={["TypeScript", "Node.js", "Supabase"]}
+            />
+
             <CardSpotlight
               title="PsychicTournament"
               year="2026"

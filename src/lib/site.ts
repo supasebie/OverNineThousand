@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 export const SITE_URL = "https://www.overninethousand.com";
 export const SITE_NAME = "OverNineThousand";
 export const SITE_DESCRIPTION =
-  "OverNineThousand is the studio of Joseph Sebastian Ruiz, a freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament.";
+  "OverNineThousand is the studio of Joseph Sebastian Ruiz, a freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament and PostQuake.";
 
 export const AUTHOR = {
   name: "Joseph Sebastian Ruiz",
@@ -23,6 +23,16 @@ export const PSYCHIC_TOURNAMENT = {
   url: "https://psychictournament.online/",
   googlePlayUrl: "https://play.google.com/store/apps/details?id=com.overninethousand.psychictournament",
   appStoreUrl: "https://apps.apple.com/us/app/psychic-tournament/id6806195000",
+};
+
+/** `?ref=overninethousand` is stored with each waitlist signup, so signups from this site can be counted. */
+export const POSTQUAKE = {
+  url: "https://postquake.app/",
+  earlyAccessUrl: "https://postquake.app/?ref=overninethousand#access",
+  outputUrl: "https://postquake.app/?ref=overninethousand#output",
+  tiktokUrl: "https://www.tiktok.com/@postquake",
+  instagramUrl: "https://www.instagram.com/postquakeapp",
+  youtubeUrl: "https://www.youtube.com/@postquake",
 };
 
 /** Appended to every page title except the home page's. */
