@@ -2,7 +2,7 @@ import CardSpotlight from "@/components/CardSpotLight";
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import Button from "@/components/Button";
 import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
-import { Activity, BoxIcon, Smartphone, Sparkles } from "lucide-react";
+import { Activity, BoxIcon, MessageSquare, Smartphone, Sparkles } from "lucide-react";
 import { Terminal } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -11,16 +11,17 @@ import Footer, { SocialLink } from "@/components/Footer";
 import { tutorials } from "@/config/tutorials";
 import ASCIIBackground from "@/components/ASCIIBackground";
 import JsonLd from "@/components/JsonLd";
-import { AUTHOR, POSTQUAKE, PSYCHIC_TOURNAMENT, SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/site";
+import { AUTHOR, CHATACOMBS, POSTQUAKE, PSYCHIC_TOURNAMENT, SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/site";
 
 const LAUNCH_POST = "/blog/2026-09-23-psychic-tournament-is-live-on-android-and-ios";
 const POSTQUAKE_POST = "/blog/2026-09-29-introducing-postquake";
+const CHATACOMBS_POST = "/blog/2026-10-04-chatacombs-custom-vertical-youtube-livestream";
 
 export const metadata: Metadata = {
   ...pageMetadata({
     title: "OverNineThousand | Freelance Fullstack & Mobile App Developer",
     description:
-      "Joseph Sebastian Ruiz: freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament and PostQuake.",
+      "Joseph Sebastian Ruiz: freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament, PostQuake and Chatacombs.",
     path: "/",
   }),
   // The home page carries the brand in full, so it skips the "| OverNineThousand" template.
@@ -85,6 +86,19 @@ const structuredData = {
       author: { "@id": `${SITE_URL}/#person` },
       publisher: { "@id": `${SITE_URL}/#organization` },
     },
+    {
+      "@type": "VideoGame",
+      "@id": `${CHATACOMBS.url}#game`,
+      name: "Chatacombs: Roguelike Arena",
+      url: CHATACOMBS.url,
+      description:
+        "A roguelike battle royale played from YouTube live chat. Viewers type join, get a hero with their name and fight until one is left.",
+      genre: ["Battle royale", "Roguelike"],
+      gamePlatform: "YouTube Live",
+      sameAs: [CHATACOMBS.youtubeUrl],
+      author: { "@id": `${SITE_URL}/#person` },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
   ],
 };
 
@@ -118,7 +132,11 @@ export default function Home() {
               <a href={POSTQUAKE.url} className="text-purple-600 hover:text-purple-700 underline underline-offset-2">
                 PostQuake
               </a>
-              , a tool that turns a link to any app, website or online shop into a week of short-form posts.
+              , a tool that turns a link to any app, website or online shop into a week of short-form posts. My newest,{" "}
+              <a href={CHATACOMBS.url} className="text-purple-600 hover:text-purple-700 underline underline-offset-2">
+                Chatacombs
+              </a>
+              , is a battle royale you play from YouTube live chat.
             </p>
             <div className="flex gap-3">
               <SocialLink
@@ -137,72 +155,71 @@ export default function Home() {
 
         <section className="mb-12" aria-labelledby="launch-heading">
           <h2 className="text-sm text-gray-500 mb-4">→ news --latest</h2>
-          <div className="relative overflow-hidden rounded-lg border border-orange-300 bg-gradient-to-br from-orange-50 via-white to-pink-50 p-6 shadow-[0_0_48px_-18px_rgba(255,61,61,0.75)]">
-            {/* Seismograph trace, after PostQuake's logo. */}
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 400 60"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-x-0 top-0 h-14 w-full text-orange-400/25"
-            >
-              <polyline
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinejoin="round"
-                points="0,30 70,30 82,24 92,36 104,30 150,30 162,8 174,54 186,14 198,46 210,22 222,34 234,30 290,30 300,26 310,34 320,30 400,30"
-              />
-            </svg>
+          <div className="relative overflow-hidden rounded-lg border border-lime-400/60 bg-gradient-to-br from-zinc-950 via-zinc-900 to-orange-950 p-6 shadow-[0_0_48px_-18px_rgba(132,255,90,0.6)]">
             <div className="relative">
               <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 px-2.5 py-1 font-semibold uppercase tracking-wider text-white">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2.5 py-1 font-semibold uppercase tracking-wider text-white">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
                   </span>
-                  Early access open
+                  Pilot tonight · ~7 PM PT
                 </span>
-                <time dateTime="2026-09-29" className="text-gray-500">
-                  {formatPostDate("2026-09-29")}
+                <time dateTime="2026-10-04" className="text-zinc-400">
+                  {formatPostDate("2026-10-04")}
                 </time>
               </div>
-              <h3 id="launch-heading" className="text-2xl font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <Activity className="h-6 w-6 text-red-500" />
+              <h3 id="launch-heading" className="text-2xl font-bold text-zinc-100 mb-1 flex items-center gap-2">
+                <MessageSquare className="h-6 w-6 text-orange-400" />
                 <span>
-                  Introducing{" "}
-                  <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 bg-clip-text text-transparent">
-                    PostQuake
-                  </span>
+                  <span className="text-lime-400">Chat</span>acombs: Roguelike Arena
                 </span>
               </h3>
-              <p className="text-sm font-semibold text-red-500 mb-3">Posts that shake the feed.</p>
-              <p className="text-gray-700 leading-relaxed mb-5">
-                Paste a link to your app, website, online shop or newsletter and get back a week of TikTok-style slideshows
-                and videos, written in your customers&apos; own words and ready for TikTok, Reels, Shorts and Facebook. If it
-                lives online, PostQuake can market it. Its first customer is my own game: seven ready-to-post sets for about
-                $2.73 in images.
+              <p className="text-sm font-semibold text-orange-400 mb-3">A battle royale you play from YouTube live chat.</p>
+              <p className="text-zinc-300 leading-relaxed mb-5">
+                Type <code className="text-lime-300">join</code> and a hero with your name drops into a collapsing dungeon to
+                fight the rest of chat until one is left. A custom-built vertical stream for the YouTube Shorts feed: I made
+                the game, the overlay and the control room. The first public pilot goes live tonight around 7 PM Pacific.
               </p>
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <a
-                  href={POSTQUAKE.earlyAccessUrl}
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-110 transition"
+                  href={CHATACOMBS.liveUrl}
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition-colors"
                 >
-                  Get early access →
+                  Watch &amp; play on YouTube →
                 </a>
                 <Link
-                  href={POSTQUAKE_POST}
-                  className="inline-flex items-center justify-center gap-2 rounded-md border border-orange-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:border-red-500 transition-colors"
+                  href={CHATACOMBS_POST}
+                  className="inline-flex items-center justify-center gap-2 rounded-md border border-zinc-600 bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-lime-300 hover:border-lime-400 transition-colors"
                 >
-                  Read the announcement
+                  How I built it
                 </Link>
                 <a
-                  href={POSTQUAKE.outputUrl}
-                  className="inline-flex items-center justify-center gap-2 rounded-md border border-orange-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:border-red-500 transition-colors"
+                  href={CHATACOMBS.url}
+                  className="inline-flex items-center justify-center gap-2 rounded-md border border-zinc-600 bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-lime-300 hover:border-lime-400 transition-colors"
                 >
-                  See real output
+                  Commands &amp; wiki
                 </a>
               </div>
             </div>
+          </div>
+
+          <div className="mt-4 flex flex-col gap-2 rounded-lg border border-orange-200 bg-white/80 px-4 py-3 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">
+            <span className="inline-flex items-center gap-2 font-semibold text-red-500">
+              <Activity className="h-4 w-4" />
+              PostQuake early access is open
+            </span>
+            <span className="flex flex-wrap gap-x-3 gap-y-1">
+              <a href={POSTQUAKE.earlyAccessUrl} className="text-gray-600 underline underline-offset-2 hover:text-red-500">
+                Get early access
+              </a>
+              <Link href={POSTQUAKE_POST} className="text-gray-600 underline underline-offset-2 hover:text-red-500">
+                Announcement
+              </Link>
+              <a href={POSTQUAKE.outputUrl} className="text-gray-600 underline underline-offset-2 hover:text-red-500">
+                Real output
+              </a>
+            </span>
           </div>
 
           <div className="mt-4 flex flex-col gap-2 rounded-lg border border-purple-200 bg-white/80 px-4 py-3 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">
@@ -265,6 +282,17 @@ export default function Home() {
         <section className="mb-12">
           <h2 className="text-sm text-gray-500 mb-4">→ featured-projects --list</h2>
           <div className="space-y-8">
+            <CardSpotlight
+              title="Chatacombs"
+              year="2026"
+              status="In Progress"
+              link={CHATACOMBS.url}
+              description="A roguelike battle royale played from YouTube live chat, built as a vertical stream for the Shorts feed. Viewers type join and a hero with their name fights through a collapsing dungeon until one is left. A deterministic TypeScript engine in a Web Worker, a 1080×1920 canvas overlay captured by OBS, and a control room that keeps the show running unattended."
+              type="personal"
+              projectType="other"
+              techs={["TypeScript", "Canvas", "Vite", "YouTube API", "OBS"]}
+            />
+
             <CardSpotlight
               title="PostQuake"
               year="2026"
