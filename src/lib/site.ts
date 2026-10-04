@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 export const SITE_URL = "https://www.overninethousand.com";
 export const SITE_NAME = "OverNineThousand";
 export const SITE_DESCRIPTION =
-  "OverNineThousand is the studio of Joseph Sebastian Ruiz, a freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament and PostQuake.";
+  "OverNineThousand is the studio of Joseph Sebastian Ruiz, a freelance fullstack developer in Los Angeles building Flutter mobile apps, .NET APIs and Angular/React websites. Maker of Psychic Tournament, PostQuake and Chatacombs.";
 
 export const AUTHOR = {
   name: "Joseph Sebastian Ruiz",
@@ -33,6 +33,13 @@ export const POSTQUAKE = {
   tiktokUrl: "https://www.tiktok.com/@postquake",
   instagramUrl: "https://www.instagram.com/postquakeapp",
   youtubeUrl: "https://www.youtube.com/@postquake",
+};
+
+export const CHATACOMBS = {
+  url: "https://chatacombs.com/",
+  wikiUrl: "https://chatacombs.com/wiki/",
+  youtubeUrl: "https://www.youtube.com/@Chatacombs",
+  liveUrl: "https://www.youtube.com/@Chatacombs/live",
 };
 
 /** Appended to every page title except the home page's. */
